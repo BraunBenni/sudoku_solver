@@ -61,11 +61,41 @@ def init_board(manual_input):
     return board
 
 
+def test_board(board):
+    '''
+    Ueberpruefen der Eingabe:
+        ausgefuellte Felder: 0 - 9
+        leere Felder: -1
+    '''
+
+    passed = 1
+    for i in range(0,3): #globale Zeilen des Boards
+            row_global = i
+            for j in range(0,3): #globale Spalten des Boards
+                coloumb_global = j
+                cell = board[row_global][coloumb_global]
+                for k in range(0,3): #Zeilen der Zelle
+                    row_cell = k
+                    for l in range(0,3): #Spalten der Zelle
+                        coloumb_cell = l
+                        element = cell.item(row_cell, coloumb_cell)
+                        if element not in range (-1,10):
+                            passed = 0
+    
+    #Ausgabe
+    if passed == 0:
+        print("\n\n [WARNUNG:] Fehlerhafte Eingabe!! Nur Werte zwischen 0 und 9 & -1 fuer leeres Fekd moeglich")
+    else:
+        print("\n\n Eingabetest bestanden!")
+
+
+
 
 def ausgabe(board):
     '''
     Textausgabe des aktuellen Boards
     '''
+
     print('| ', end = '') #für Anfang
     for m in range(0,3): #alle Zellenzeilen (global)
         row_global = m
@@ -78,16 +108,19 @@ def ausgabe(board):
                     coloumbs_cell = i
                     print(' ', cell.item(row_cells,coloumbs_cell), ' ',end = '') 
                 print(' | ', end = '') #zwischen Zellen
-    
-            if row_cells == 2: #falls letzte Zeile der Zellen --> Trennlinie & Anfang neuer Zeile
+            
+            if row_global == 2 and row_cells == 2: #falls gloabl letzte Zeile der Zellen --> Trennlinie & KEIN Anfang neuer Zeile
+                print('\n-------------------------------------------------------')
+            elif row_cells == 2: #falls letzte Zeile der Zellen --> Trennlinie & Anfang neuer Zeile
                 print('\n------------------------------------------------------- \n| ', end='')
             else:
                 print('\n| ', end = '') #Zeilenumbruch und Anfang neuer Zeile
 
 
-manual_input = 1
+manual_input = 0
 board = init_board(manual_input)
 ausgabe(board)
+test_board(board)
 
 
 time.sleep(3)
