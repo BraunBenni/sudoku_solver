@@ -44,8 +44,7 @@ def init_board(manual_input):
                         temp = input()
                         cell[row_cell][coloumb_cell] = int(temp) 
 
-
-    else:
+    else:   #vorgefertigter Input
         cell_11 = np.matrix([[1,1,1],[1,6,1],[1,1,1]])
         cell_12 = np.matrix([[2,2,2],[2,2,2],[2,2,2]])
         cell_13 = np.matrix([[3,3,3],[3,3,3],[3,3,3]])
@@ -81,7 +80,6 @@ def test_board(board):
                         element = cell.item(row_cell, coloumb_cell)
                         if element not in range (-1,10):
                             passed = 0
-    
     #Ausgabe
     if passed == 0:
         print("\n\n [WARNUNG:] Fehlerhafte Eingabe!! Nur Werte zwischen 0 und 9 & -1 fuer leeres Fekd moeglich")
@@ -96,7 +94,7 @@ def ausgabe(board):
     Textausgabe des aktuellen Boards
     '''
 
-    print('| ', end = '') #für Anfang
+    print('| ', end = '') #fÃ¼r Anfang
     for m in range(0,3): #alle Zellenzeilen (global)
         row_global = m
         for k in range (0,3): #alle Zeilen der Zellen
