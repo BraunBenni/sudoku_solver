@@ -1,6 +1,8 @@
 import numpy as np
 import time
 
+from generate_sudoku import *
+
 def checkNumber(board, row, coloumb, number):
     '''
     Function checks whether new number is valid:
@@ -75,32 +77,38 @@ def dispend(board):
         print(board[i])
 
 #easy example
-#board = [
-#    #0 1 2 3 4 5 6 7 8
-#    [0,5,9,0,0,4,7,6,0], #0
-#    [0,8,0,5,7,0,3,0,0], #1
-#    [0,4,3,0,0,0,0,5,0], #2
-#    [1,0,0,0,4,0,6,0,0], #3
-#    [0,7,0,0,6,0,0,9,0], #4
-#    [0,0,2,0,8,0,0,0,7], #5
-#    [0,9,0,0,0,0,1,2,0], #6
-#    [0,0,7,0,2,6,0,3,0], #7
-#    [0,2,6,4,0,0,9,7,0]  #8
-#]
-
-#hard example
 board = [
     #0 1 2 3 4 5 6 7 8
-    [0,1,0,8,0,0,7,0,0], #0
-    [0,9,0,6,0,0,1,0,0], #1
-    [5,0,7,0,4,0,0,6,0], #2
-    [7,0,0,2,9,0,4,5,0], #3
-    [0,0,0,0,0,0,0,0,0], #4
-    [0,2,1,0,5,8,0,0,9], #5
-    [0,7,0,0,8,0,5,0,6], #6
-    [0,0,2,0,0,4,0,8,0], #7
-    [0,0,6,0,0,9,0,1,0]  #8
+    [0,5,9,0,0,4,7,6,0], #0
+    [0,8,0,5,7,0,3,0,0], #1
+    [0,4,3,0,0,0,0,5,0], #2
+    [1,0,0,0,4,0,6,0,0], #3
+    [0,7,0,0,6,0,0,9,0], #4
+    [0,0,2,0,8,0,0,0,7], #5
+    [0,9,0,0,0,0,1,2,0], #6
+    [0,0,7,0,2,6,0,3,0], #7
+    [0,2,6,4,0,0,9,7,0]  #8
 ]
+
+#hard example
+#board = [
+#    #0 1 2 3 4 5 6 7 8
+#    [0,1,0,8,0,0,7,0,0], #0
+#    [0,9,0,6,0,0,1,0,0], #1
+#    [5,0,7,0,4,0,0,6,0], #2
+#    [7,0,0,2,9,0,4,5,0], #3
+#    [0,0,0,0,0,0,0,0,0], #4
+#    [0,2,1,0,5,8,0,0,9], #5
+#    [0,7,0,0,8,0,5,0,6], #6
+#    [0,0,2,0,0,4,0,8,0], #7
+#    [0,0,6,0,0,9,0,1,0]  #8
+#]
+
+
+print("\nStarting board:\n")
+dispend(board)
+
+solvable = 1
 
 start_time = time.time()
 
@@ -111,14 +119,22 @@ index_array = np.zeros([2,81]) #array to save edited elements (row and coloumb i
 step = 0
 while solved != 1:
     row, coloumb = findNextEmpty(board, int(row), int(coloumb)) #seraching new empty element
-    print('row = ', row, '\ncoloumb = ', coloumb, '\n')
     if row == -1: #checks whether soduko is already solved (findeNextEmpty returns -1 & -1, if it can't find an empty element)
         solved = 1
         break
 
+    if solvable == 0:
+        break
+
+    print('row = ', row, '\ncoloumb = ', coloumb, '\n')
+
     number = 1
     element_passed = 0
     while element_passed != 1:
+
+        if solvable == 0:
+            break
+
         element_passed = checkNumber(board, row, coloumb, number)
         if element_passed: #break if element passes test (and save row and coloumb indices)
             board[int(row)][int(coloumb)] = number
@@ -137,15 +153,20 @@ while solved != 1:
                 coloumb = index_array[1][step]
                 number = board[int(row)][int(coloumb)] #loading number of previous step
                 board[int(row)][int(coloumb)] = 0 #deleting previous step --> again an empty element
-                #if possible, increasing number of previous step --> otherwise keep reversing
+                #if possible: increasing number of previous step --> otherwise keep reversing
                 if number in range(1,9):
                     reverse = 1 #found step we can reverse to
                     number += 1
+                if step == -1:
+                    print('\n!!! [WARNING] Sukdoku is not solveable !!!')
+                    solvable = 0
+                    break
                    
             
 end_time = time.time()
 
 print("\n\n     --- execution time: %.7s seconds --- \n" % (end_time-start_time))
 
-print('\n\n Solution:')
-dispend(board)
+if solvable == 1:
+    print('\n\nSolution:')
+    dispend(board)
