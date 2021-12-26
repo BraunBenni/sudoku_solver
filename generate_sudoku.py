@@ -46,11 +46,11 @@ def dispend(board):
         print(board[i])
 
 
-def generate_sudoku(empty_elements):
+def generate_sudoku(elements):
     board = np.zeros([9,9])
 
     iter  = 0
-    while iter < empty_elements:
+    while iter < elements:
         iter  = iter + 1
 
         #search random position
@@ -58,10 +58,10 @@ def generate_sudoku(empty_elements):
         coloumb = random.randrange(0,9)
 
         #generate valid number
-        number = random.randrange(0,9)
+        number = random.randrange(0,10)
         passed = 0
         while passed != 1:
-            number = random.randrange(0,9)
+            number = random.randrange(0,10)
             passed = checkNumber(board, row, coloumb, number)
         board[row][coloumb] = number
 
